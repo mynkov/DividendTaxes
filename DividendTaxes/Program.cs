@@ -109,7 +109,7 @@ foreach (var dividendLine in dividendLines)
         var sourceCountryCode = GetCountryCode(tax != null ? tax.country : GetCountry(ticker));
         var paymentCountryCode = isInteractiveBrokers ? 
             "840" : // USA
-            sourceCountryCode; // WTF? Lk has a bug. 643 (Russia) in future
+            sourceCountryCode; // WTF? Lk has a bug. 643 (Russia) in the future
 
         var currencyCode = "840"; // $ USA
         var taxRate = 13;
