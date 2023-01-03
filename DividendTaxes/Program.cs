@@ -84,12 +84,12 @@ foreach (var dividendLine in dividendLines)
         var description = lineItems[4];
         var amount = decimal.Parse(lineItems[5]);
         var ticker = description.Split('(').First();
-        var isInteractiveBrokers = description.Contains("Cash Dividend USD");
+        var isInteractiveBrokers = description.Contains("Cash Dividend USD") || description.Contains("Payment in Lieu of Dividend");
 
         if (currency != "USD")
             throw new Exception($"Unknown currency '{currency}'");
 
-        var tax = taxes.SingleOrDefault(x => x.date == date && x.ticker == ticker);
+        var tax = taxes.SingleOrDefault(x => x.date == date && x.ticker == ticker && x.description.Contains(description.Replace(" (Ordinary Dividend)", "")));
 
         if(tax == null)
         {
@@ -97,6 +97,9 @@ foreach (var dividendLine in dividendLines)
         }
         else
         {
+            if(tax.amount < 0)
+                throw new Exception($"{date} {ticker}: tax amount less than 0");
+            
             var taxProportion = tax.amount / amount;
             if (taxProportion < 0.08M || taxProportion > 0.11M)
             {
@@ -243,10 +246,12 @@ static string GetCountry(string ticker) => ticker switch
     "VOD" => "GB",
     "AZN" => "GB",
     "RDS B" => "GB",
+    "SHEL" => "GB",
     "TCS" => "CY",
     "AGRO" => "CY",
     "GLTR" => "CY",
     "POLY" => "JE",
+    "VIV" => "BR",
     _ => throw new Exception($"Unknown ticker: {ticker}"),
 };
 
@@ -263,6 +268,7 @@ static string GetCountryCode(string country) => country switch
     "TW" => "158", // Taiwan
     "CY" => "196", // Cyprus
     "JE" => "832", // Jersey
+    "BR" => "076", // Brazil
     _ => throw new Exception($"Unknown country: {country}"),
 };
 
