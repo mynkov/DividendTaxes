@@ -65,7 +65,7 @@ var counter = 0;
 
 var httpClient = new HttpClient();
 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authorizationBearerHeader);
-
+ 
 foreach (var dividendLine in dividendLines)
 {
     var lineItems = dividendLine.Split(',');
@@ -247,11 +247,13 @@ static string GetCountry(string ticker) => ticker switch
     "AZN" => "GB",
     "RDS B" => "GB",
     "SHEL" => "GB",
+    "HLN" => "GB",
     "TCS" => "CY",
     "AGRO" => "CY",
     "GLTR" => "CY",
     "POLY" => "JE",
     "VIV" => "BR",
+    // "PTRCY" => "CN", мб не CN, но раньше было китайским
     _ => throw new Exception($"Unknown ticker: {ticker}"),
 };
 
@@ -265,6 +267,7 @@ static string GetCountryCode(string country) => country switch
     "NL" => "528", // Netherlands
     "IN" => "356", // India
     "CN" => "156", // China
+    "HK" => "852", // Hong Kong
     "TW" => "158", // Taiwan
     "CY" => "196", // Cyprus
     "JE" => "832", // Jersey
