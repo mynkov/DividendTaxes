@@ -65,7 +65,7 @@ var counter = 0;
 
 var httpClient = new HttpClient();
 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authorizationBearerHeader);
-
+ 
 foreach (var dividendLine in dividendLines)
 {
     var lineItems = dividendLine.Split(',');
